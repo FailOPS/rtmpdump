@@ -1137,6 +1137,16 @@ main(int argc, char **argv)
 	  STR2AVAL(WeebToken, optarg);
 	  break;
         case 'N':
+	  {
+	    char *tmp_nltoken;
+	    char *tmp_nlid[255];
+	    STR2AVAL(nlplaypath, strtok(optarg,","));
+	    tmp_nltoken = strtok(NULL, ",");
+	    STR2AVAL(nltoken   , tmp_nltoken);
+	    strcpy((char*)tmp_nlid, tmp_nltoken);
+	    STR2AVAL(nlid      , strtok((char*)tmp_nlid,"?"));
+	    RTMP_Log(RTMP_LOGDEBUG, "nlplaypath: %s", optarg);
+	  }
           break;
 	default:
 	  RTMP_LogPrintf("unknown option: %c\n", opt);
