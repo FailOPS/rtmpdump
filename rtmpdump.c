@@ -823,6 +823,9 @@ main(int argc, char **argv)
   uint32_t swfSize = 0;
   AVal flashVer = { 0, 0 };
   AVal sockshost = { 0, 0 };
+  AVal nlplaypath = { 0, 0 };
+  AVal nltoken = { 0, 0 };
+  AVal nlid = { 0, 0 };
 
 #ifdef CRYPTO
   int swfAge = 30;	/* 30 days for SWF cache by default */
@@ -908,12 +911,13 @@ main(int argc, char **argv)
     {"verbose", 0, NULL, 'V'},
     {"jtv", 1, NULL, 'j'},
     {"weeb", 1, NULL, 'J'},
+    {"nlplaypath", 1, NULL, 'N'},
     {0, 0, 0, 0}
   };
 
   while ((opt =
 	  getopt_long(argc, argv,
-                      "hVveqzRr:s:t:i:p:a:b:f:o:u:C:n:c:l:y:Ym:k:d:A:B:T:w:x:W:X:S:#j:J:",
+                      "hVveqzRr:s:t:i:p:a:b:f:o:u:C:n:c:l:y:Ym:k:d:A:B:T:w:x:W:X:S:#j:J:N:",
 		      longopts, NULL)) != -1)
     {
       switch (opt)
@@ -1132,6 +1136,8 @@ main(int argc, char **argv)
 	case 'J':
 	  STR2AVAL(WeebToken, optarg);
 	  break;
+        case 'N':
+          break;
 	default:
 	  RTMP_LogPrintf("unknown option: %c\n", opt);
 	  usage(argv[0]);
