@@ -1139,13 +1139,27 @@ main(int argc, char **argv)
         case 'N':
 	  {
 	    char *tmp_nltoken;
-	    char *tmp_nlid[255];
+            char *tmp_nlid;
+	    char *tmp;
+
 	    STR2AVAL(nlplaypath, strtok(optarg,","));
-	    tmp_nltoken = strtok(NULL, ",");
+	    RTMP_Log(RTMP_LOGDEBUG, "nlplaypath: %s", nlplaypath.av_val);
+
+	    const char *tokenhead = "mp4:";
+	    tmp = strtok(NULL, ",");
+   	    tmp_nltoken = malloc(sizeof(char)*(strlen(tokenhead)+strlen(tmp)+1));
+            snprintf(tmp_nltoken, (strlen(tokenhead)+strlen(tmp)+1), "%s%s", tokenhead, tmp);
 	    STR2AVAL(nltoken   , tmp_nltoken);
-	    strcpy((char*)tmp_nlid, tmp_nltoken);
-	    STR2AVAL(nlid      , strtok((char*)tmp_nlid,"?"));
-	    RTMP_Log(RTMP_LOGDEBUG, "nlplaypath: %s", optarg);
+	    RTMP_Log(RTMP_LOGDEBUG, "token: %s", nltoken.av_val);
+	    
+            const char *offsetzero = "_0";
+	    tmp = strtok((char*)tmp,"?");
+	    tmp = strrchr(tmp, '/') + 1;
+            tmp_nlid = malloc(sizeof(char)*(strlen(tmp)+strlen(offsetzero)+1));
+            snprintf(tmp_nlid, (strlen(tmp)+strlen(offsetzero)+1), "%s%s", tmp, offsetzero);
+	    STR2AVAL(nlid      , tmp_nlid);
+ 	    RTMP_Log(RTMP_LOGDEBUG, "nlid: %s", nlid.av_val);
+	    
 	  }
           break;
 	default:
@@ -1267,7 +1281,8 @@ main(int argc, char **argv)
     {
       RTMP_SetupStream(&rtmp, protocol, &hostname, port, &sockshost, &playpath,
                        &tcUrl, &swfUrl, &pageUrl, &app, &auth, &swfHash, swfSize,
-                       &flashVer, &subscribepath, &usherToken, &WeebToken, dSeek, dStopOffset, bLiveStream, timeout);
+                       &flashVer, &subscribepath, &usherToken, &WeebToken, dSeek, dStopOffset,
+                       bLiveStream, timeout, &nlplaypath, &nltoken, &nlid);
     }
   else
     {
