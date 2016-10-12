@@ -554,11 +554,14 @@ void processTCPrequest(STREAMING_SERVER * server,	// server socket and state (ou
   RTMP_Log(RTMP_LOGDEBUG, "Setting buffer time to: %dms", req.bufferTime);
   RTMP_Init(&rtmp);
   RTMP_SetBufferMS(&rtmp, req.bufferTime);
+  //ToFix: Temporary fix for the new SetupStream call so it can compile
+  AVal a, b, c;
+
   if (!req.fullUrl.av_len)
     {
       RTMP_SetupStream(&rtmp, req.protocol, &req.hostname, req.rtmpport, &req.sockshost,
                        &req.playpath, &req.tcUrl, &req.swfUrl, &req.pageUrl, &req.app, &req.auth, &req.swfHash, req.swfSize, &req.flashVer, &req.subscribepath, &req.usherToken, &req.WeebToken, dSeek, req.dStopOffset,
-                       req.bLiveStream, req.timeout);
+                       req.bLiveStream, req.timeout, &a, &b, &c);
     }
   else
     {
